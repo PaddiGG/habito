@@ -16,20 +16,25 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Build
+        uses: cypress-io/github-action@v6
+        with:
+          runTests: false
+      - run: yarn cypress info
+      - run: node --version
+      - run: yarn build
+
       - name: Unit Tests
         uses: cypress-io/github-action@v6
         with:
           component: true
-          record: true
-        env:
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: e2e Tests
         uses: cypress-io/github-action@v6
         with:
           install: false
-          start: yarn dev
-          wait-on: 'http://localhost:5173'
+          start: yarn preview
+          wait-on: 'http://localhost:4173'
           record: true
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
