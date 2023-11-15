@@ -9,6 +9,8 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "format": "yarn prettier --write .",
+    "cy:unit": "yarn cypress open --component",
+    "cy:e2e": "yarn cypress open --e2e",
     "test": "yarn test:unit && yarn test:e2e",
     "test:unit": "cypress run --component",
     "test:e2e": "cypress run --e2e"
