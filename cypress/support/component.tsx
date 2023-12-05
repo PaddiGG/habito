@@ -13,6 +13,7 @@
 // https://on.cypress.io/configuration
 // ***********************************************************
 
+// get the tailwindcss stylings
 import 'tailwindcss/tailwind.css'
 
 // Import commands.js using ES2015 syntax:
@@ -21,21 +22,38 @@ import './commands'
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-import { mount } from 'cypress/react18'
+import { mount, MountOptions, MountReturn } from 'cypress/react18'
+
+import { MemoryRouter, MemoryRouterProps } from 'react-router-dom'
 
 // Augment the Cypress namespace to include type definitions for
 // your custom command.
 // Alternatively, can be defined in cypress/support/component.d.ts
 // with a <reference path="./component" /> at the top of your spec.
 declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Cypress {
     interface Chainable {
-      mount: typeof mount
+      /**
+       * Mounts a React node
+       * @param component React Node to mount
+       * @param options Additional options to pass into mount
+       */
+      mount(
+        component: React.ReactNode,
+        options?: MountOptions & { routerProps?: MemoryRouterProps },
+      ): Cypress.Chainable<MountReturn>
     }
   }
 }
 
-Cypress.Commands.add('mount', mount)
+Cypress.Commands.add('mount', (component, options = {}) => {
+  const { routerProps = { initialEntries: ['/'] }, ...mountOptions } = options
+
+  const wrapped = <MemoryRouter {...routerProps}>{component}</MemoryRouter>
+
+  return mount(wrapped, mountOptions)
+})
 
 // Example use:
 // cy.mount(<MyComponent />)
