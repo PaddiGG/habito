@@ -8,7 +8,10 @@ it('contains checkbox', () => {
     .and('have.attr', 'type', 'checkbox')
 })
 
-it('contains checkbox', () => {
+it('contains label for checkbox', () => {
   cy.mount(<Card />)
-  cy.get("[data-testid^='card']").find('label').should('have.length', 1)
+  cy.get("[data-testid^='card']")
+    .find('label')
+    .should('have.length', 1)
+    .and('have.attr', 'for', 'todoCheck')
 })

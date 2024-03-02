@@ -5,7 +5,6 @@ const Home = () => {
   return (
     <Layout>
       <div className='flex flex-col items-center'>
-        <h1>Home</h1>
         <Card />
       </div>
     </Layout>
